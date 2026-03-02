@@ -2,6 +2,7 @@
 
 namespace Jsadways\OdooApi\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider;
 use Jsadways\OdooApi\Contracts\OdooServiceContract;
 use Jsadways\OdooApi\Services\OdooService\OdooService;
@@ -30,5 +31,12 @@ class OdooApiServiceProvider extends ServiceProvider
         ]);
 
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
+            $schedule->call(function () {
+                app(OdooServiceContract::class)->retry();
+            })->hourly();
+        });
     }
 }
