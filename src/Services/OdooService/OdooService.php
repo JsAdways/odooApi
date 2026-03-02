@@ -15,10 +15,10 @@ class OdooService implements OdooServiceContract
 
         $process = (new OdooProcess())
             ->gen_transaction_key()
-            ->cache_data($data)
-            ->request($endpoint->method(), $endpoint->value, $data);
+            ->cache_data($endpoint->method(), $endpoint->value, $data)
+            ->request();
 
-        if (!$process->isSuccess()) {
+        if ($process->isSuccess()) {
             $process->remove_cache_data();
         }
 
@@ -31,10 +31,10 @@ class OdooService implements OdooServiceContract
 
         $process = (new OdooProcess())
             ->gen_transaction_key()
-            ->cache_data($data)
-            ->request($endpoint->method(), $endpoint->value, $data);
+            ->cache_data($endpoint->method(), $endpoint->value, $data)
+            ->request();
 
-        if (!$process->isSuccess()) {
+        if ($process->isSuccess()) {
             $process->remove_cache_data();
         }
 
@@ -47,7 +47,21 @@ class OdooService implements OdooServiceContract
 
         $process = (new OdooProcess())
             ->gen_transaction_key()
-            ->request($endpoint->method(), $endpoint->value, $data);
+            ->cache_data($endpoint->method(), $endpoint->value, $data)
+            ->request();
+
+        if ($process->isSuccess()) {
+            $process->remove_cache_data();
+        }
+
+        return $process->getResult();
+    }
+
+    public function retry(): array
+    {
+        $process = (new OdooProcess())
+            ->get_pending_requests()
+            ->retry_all();
 
         return $process->getResult();
     }

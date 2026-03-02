@@ -10,4 +10,5 @@ interface OdooServiceContract
     public function create(OdooEndpoint $endpoint, OdooPayloadDto $payload);
     public function update(OdooEndpoint $endpoint, OdooPayloadDto $payload);
     public function list(OdooEndpoint $endpoint, OdooPayloadDto $payload);
+    public function retry(): array;
 }
