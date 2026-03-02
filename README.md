@@ -58,6 +58,7 @@ Facade 提供三個方法，對應不同操作類型：
 | `Odoo::create(OdooEndpoint, OdooPayloadDto)` | 建立資料 |
 | `Odoo::update(OdooEndpoint, OdooPayloadDto)` | 更新資料 |
 | `Odoo::list(OdooEndpoint, OdooPayloadDto)` | 查詢列表 |
+| `Odoo::retry()` | 重試所有失敗的待處理請求 |
 
 ---
 
@@ -322,10 +323,43 @@ src/Dtos/
     └── CostDiscountVoidDto.php
 ```
 
+## Retry 機制
+
+每次呼叫 `create` / `update` / `list` 時，請求資料會先寫入 Cache。成功後自動移除，失敗則保留等待 retry。
+
+透過索引 key（`odoo_pending_requests`）記錄所有待 retry 的 cache key，retry 時依 `cached_at` 時間排序，先快取的先處理。
+
+### 手動 retry
+
+```php
+$results = Odoo::retry();
+```
+
+回傳陣列，每筆包含 `transaction_key`、`success`、`result`。
+
+### 自動排程 retry
+
+在 `.env` 中設定：
+
+```
+ODOO_AUTO_RETRY=true
+```
+
+啟用後，套件會自動註冊每小時執行一次的排程進行 retry。預設為 `false`（不啟用）。
+
+主專案需確保 cron 有執行 `schedule:run`：
+
+```
+* * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+---
+
 ## 設計說明
 
 - 所有 DTO 繼承 `OdooPayloadDto`，提供 `get(): array` 方法將 properties 轉為 array
 - `get()` 自動過濾值為 `null` 的欄位（可選欄位不傳時不會出現在 payload 中）
 - 巢狀物件皆有獨立 DTO，IDE 可完整提示每個欄位
 - `ProductUpdateDto` 覆寫 `get()` 回傳 sequential array，對應 API data 為陣列的格式
-- `OdooProcess` 不受影響，仍接收 array，由 `OdooService` 呼叫 `$payload->get()` 轉換
+- `OdooProcess` 負責快取管理與 retry 邏輯，`OdooService` 僅做薄層串接
+- 失敗請求透過索引表機制追蹤，支援手動或排程自動 retry
