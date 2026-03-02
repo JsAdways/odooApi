@@ -32,11 +32,13 @@ class OdooApiServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
-        $this->app->booted(function () {
-            $schedule = $this->app->make(Schedule::class);
-            $schedule->call(function () {
-                app(OdooServiceContract::class)->retry();
-            })->hourly();
-        });
+        if (config('odoo_api.auto_retry')) {
+            $this->app->booted(function () {
+                $schedule = $this->app->make(Schedule::class);
+                $schedule->call(function () {
+                    app(OdooServiceContract::class)->retry();
+                })->hourly();
+            });
+        }
     }
 }
