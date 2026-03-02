@@ -2,9 +2,12 @@
 
 namespace Jsadways\OdooApi\Contracts;
 
+use Jsadways\OdooApi\Dtos\OdooPayloadDto;
+use Jsadways\OdooApi\Enums\OdooEndpoint;
+
 interface OdooServiceContract
 {
-    public function create(string $url, array $data);
-    public function update(string $url, array $data);
-    public function list(string $url, array $data = []);
+    public function create(OdooEndpoint $endpoint, OdooPayloadDto $payload);
+    public function update(OdooEndpoint $endpoint, OdooPayloadDto $payload);
+    public function list(OdooEndpoint $endpoint, OdooPayloadDto $payload);
 }

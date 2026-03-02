@@ -21,14 +21,14 @@ class OdooProcess
     public function cache_data(mixed $data, ?string $key = null): static
     {
         $cacheKey = $key ?? $this->transactionKey;
-        Cache::put($cacheKey, $data);
+        Cache::put($cacheKey, $this->_gen_payload($data));
         return $this;
     }
 
     public function request(string $method, string $url, mixed $data = []): static
     {
         $fullUrl = rtrim(config('odoo_api.odoo_server_host'), '/') . '/' . ltrim($url, '/');
-        $response = Http::$method($fullUrl, $data);
+        $response = Http::$method($fullUrl, $this->_gen_payload($data));
         $this->success = $response->successful();
         $this->result = $response->json();
         return $this;
@@ -54,5 +54,13 @@ class OdooProcess
     public function getTransactionKey(): string
     {
         return $this->transactionKey;
+    }
+
+    private function _gen_payload(mixed $data): array
+    {
+        return [
+            'transaction_key' => $this->transactionKey,
+            'data' => $data,
+        ];
     }
 }

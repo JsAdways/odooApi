@@ -3,16 +3,20 @@
 namespace Jsadways\OdooApi\Services\OdooService;
 
 use Jsadways\OdooApi\Contracts\OdooServiceContract;
+use Jsadways\OdooApi\Dtos\OdooPayloadDto;
+use Jsadways\OdooApi\Enums\OdooEndpoint;
 use Jsadways\OdooApi\Services\OdooService\Process\OdooProcess;
 
 class OdooService implements OdooServiceContract
 {
-    public function create(string $url, array $data)
+    public function create(OdooEndpoint $endpoint, OdooPayloadDto $payload)
     {
+        $data = $payload->get();
+
         $process = (new OdooProcess())
             ->gen_transaction_key()
             ->cache_data($data)
-            ->request('post', $url, $data);
+            ->request($endpoint->method(), $endpoint->value, $data);
 
         if (!$process->isSuccess()) {
             $process->remove_cache_data();
@@ -21,12 +25,14 @@ class OdooService implements OdooServiceContract
         return $process->getResult();
     }
 
-    public function update(string $url, array $data)
+    public function update(OdooEndpoint $endpoint, OdooPayloadDto $payload)
     {
+        $data = $payload->get();
+
         $process = (new OdooProcess())
             ->gen_transaction_key()
             ->cache_data($data)
-            ->request('put', $url, $data);
+            ->request($endpoint->method(), $endpoint->value, $data);
 
         if (!$process->isSuccess()) {
             $process->remove_cache_data();
@@ -35,11 +41,13 @@ class OdooService implements OdooServiceContract
         return $process->getResult();
     }
 
-    public function list(string $url, array $data = [])
+    public function list(OdooEndpoint $endpoint, OdooPayloadDto $payload)
     {
+        $data = $payload->get();
+
         $process = (new OdooProcess())
             ->gen_transaction_key()
-            ->request('get', $url, $data);
+            ->request($endpoint->method(), $endpoint->value, $data);
 
         return $process->getResult();
     }
