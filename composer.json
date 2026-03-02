@@ -1,0 +1,28 @@
+{
+    "name": "jsadways/odoo-api",
+    "type": "library",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "Jsadways\\OdooApi\\": "src/",
+            "Jsadways\\OdooApi\\Providers\\": "Providers/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jsadways\\OdooApi\\Providers\\OdooApiServiceProvider"
+            ]
+        },
+        "aliases": {
+            "Odoo": "Jsadways\\OdooApi\\Facades\\Odoo"
+        }
+    },
+    "authors": [
+        {
+            "name": "Js-Adways",
+            "email": "it@js-adways.com.tw"
+        }
+    ],
+    "require": {}
+}
