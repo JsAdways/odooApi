@@ -1,7 +1,7 @@
 {
     "name": "jsadways/odoo-api",
     "type": "library",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "autoload": {
         "psr-4": {
             "Jsadways\\OdooApi\\": "src/",
