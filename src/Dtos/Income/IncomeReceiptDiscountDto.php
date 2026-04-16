@@ -24,6 +24,8 @@ class IncomeReceiptDiscountDto extends OdooPayloadDto
         public readonly int|float $tax,
         public readonly int|float $total_price,
         public readonly array $receipt,
+        public readonly string $creator_name,
+        public readonly string $creator_email,
         public readonly ?IncomeCreditNoteDto $credit_note = null,
         public readonly ?IncomeDebitNoteDto $debit_note = null,
         public readonly ?IncomeCostReceiptDto $cost_receipt = null,

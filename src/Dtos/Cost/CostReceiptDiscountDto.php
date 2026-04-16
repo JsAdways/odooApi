@@ -25,6 +25,8 @@ class CostReceiptDiscountDto extends OdooPayloadDto
         public readonly int|float $tax,
         public readonly int|float $total_price,
         public readonly array $receipt,
+        public readonly string $creator_name,
+        public readonly string $creator_email,
         public readonly ?CostAllowanceDto $allowance = null,
         public readonly ?CostCreditNoteDto $credit_note = null,
         public readonly ?CostDebitNoteDto $debit_note = null,

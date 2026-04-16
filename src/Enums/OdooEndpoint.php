@@ -20,6 +20,7 @@ enum OdooEndpoint: string
     case INCOME_RECEIPT_CREATE = 'income/receipt/create';
     case INCOME_RECEIPT_DISCOUNT = 'income/receipt/discount';
     case INCOME_RECEIPT_VOID = 'income/receipt/void';
+    case INCOME_RECEIPT_VOID_UPDATE = 'income/receipt/void/update';
     case INCOME_DISCOUNT_VOID = 'income/discount/void';
 
     // 財務-成本

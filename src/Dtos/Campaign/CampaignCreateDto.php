@@ -13,7 +13,6 @@ class CampaignCreateDto extends OdooPayloadDto
     public function __construct(
         public readonly int $organization,
         public readonly string $name,
-        public readonly int $agency_id,
         public readonly int $client_id,
         public readonly string $campaign_number,
         public readonly string $start_dt,
@@ -24,7 +23,6 @@ class CampaignCreateDto extends OdooPayloadDto
         public readonly int $status,
         public readonly int|float $exchange_rate,
         public readonly array $cue,
-        public readonly ?string $agency_contact_email = null,
         public readonly ?string $client_contact_email = null,
         public readonly ?string $message = null,
         public readonly ?string $memo = null,

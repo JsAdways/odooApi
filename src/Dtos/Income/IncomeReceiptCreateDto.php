@@ -22,7 +22,12 @@ class IncomeReceiptCreateDto extends OdooPayloadDto
         public readonly int|float $total_price,
         public readonly array $cue,
         public readonly array $notification_email,
+        public readonly string $creator_name,
+        public readonly string $creator_email,
+        public readonly bool $urgent = false,
         public readonly ?string $memo = null,
+        public readonly ?string $specify_dt = null,
+        public readonly ?string $pickup_dt = null,
     ) {}
 
     public function get(): array

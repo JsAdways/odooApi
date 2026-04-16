@@ -19,7 +19,6 @@ $result = Odoo::create(
     new CampaignCreateDto(
         organization: 1,
         name: 'Apple Q126 宣傳_202511-12',
-        agency_id: 712,
         client_id: 53,
         campaign_number: '2511000',
         start_dt: '2025-10-28',
@@ -152,6 +151,7 @@ Odoo::update(OdooEndpoint::PRODUCT_UPDATE, new ProductUpdateDto(
 | `INCOME_RECEIPT_CREATE` | POST | `Income\IncomeReceiptCreateDto` | `IncomeReceiptCueDto`, `NotificationEmailDto` |
 | `INCOME_RECEIPT_DISCOUNT` | POST | `Income\IncomeReceiptDiscountDto` | `IncomeDiscountReceiptDto`, `IncomeDiscountReceiptCueDto`, `IncomeCreditNoteDto`, `IncomeDebitNoteDto`, `IncomeCostReceiptDto` |
 | `INCOME_RECEIPT_VOID` | POST | `Income\IncomeReceiptVoidDto` | — |
+| `INCOME_RECEIPT_VOID_UPDATE` | POST | `Income\IncomeReceiptVoidUpdateDto` | — |
 | `INCOME_DISCOUNT_VOID` | POST | `Income\IncomeDiscountVoidDto` | — |
 
 #### 查詢列表
@@ -191,7 +191,12 @@ Odoo::create(OdooEndpoint::INCOME_RECEIPT_CREATE, new IncomeReceiptCreateDto(
     notification_email: [
         new NotificationEmailDto(name: 'Abbie', email: 'abbie@js-adways.com.tw'),
     ],
-    memo: '備註',          // 可選
+    creator_name: 'Lex',
+    creator_email: 'lex@js-adways.com.tw',
+    urgent: false,             // 可選，預設 false
+    memo: '備註',              // 可選
+    specify_dt: '20250101',    // 可選
+    pickup_dt: '20250101',     // 可選
 ));
 ```
 
@@ -217,7 +222,17 @@ Odoo::create(OdooEndpoint::INCOME_RECEIPT_DISCOUNT, new IncomeReceiptDiscountDto
             ],
         ),
     ],
-    credit_note: new IncomeCreditNoteDto(dollar_type: 1, item_name: '折讓', credit_note_number: 'A784TYG887', memo: ''),
+    creator_name: 'Lex',
+    creator_email: 'lex@js-adways.com.tw',
+    credit_note: new IncomeCreditNoteDto(
+        dollar_type: 1,
+        item_name: '折讓',
+        credit_note_number: 'A784TYG887',
+        date: '20260113',
+        contact_name: '王小明',
+        contact_address: '台北市信義區...',
+        memo: '',
+    ),
     debit_note: new IncomeDebitNoteDto(dollar_type: 1, item_name: '折讓', debit_note_number: 'A784TYG887', file: ''),
     cost_receipt: new IncomeCostReceiptDto(receipt_dt: '20260105', item_name: '退佣金', receipt_number: 'AA88765432', file: ''),
 ));
@@ -230,13 +245,26 @@ Odoo::create(OdooEndpoint::INCOME_RECEIPT_DISCOUNT, new IncomeReceiptDiscountDto
 Odoo::create(OdooEndpoint::INCOME_RECEIPT_VOID, new IncomeReceiptVoidDto(
     id: 751,
     reason: '開錯金額',
+    creator_name: 'Lex',
+    creator_email: 'lex@js-adways.com.tw',
+    reply_received: false, // 可選，預設 false
     file: '',              // 可選
+    reply_file: '',        // 可選
+));
+
+// 收到客戶回覆後更新作廢資料
+Odoo::update(OdooEndpoint::INCOME_RECEIPT_VOID_UPDATE, new IncomeReceiptVoidUpdateDto(
+    id: 751,
+    reply_received: true,
+    reply_file: '',        // 可選
 ));
 
 // 折讓作廢
 Odoo::create(OdooEndpoint::INCOME_DISCOUNT_VOID, new IncomeDiscountVoidDto(
     id: 27,
     reason: '客戶不收',
+    creator_name: 'Lex',
+    creator_email: 'lex@js-adways.com.tw',
     file: '',              // 可選
 ));
 ```
@@ -272,9 +300,19 @@ Odoo::create(OdooEndpoint::COST_RECEIPT_DISCOUNT, new CostReceiptDiscountDto(
             ],
         ),
     ],
+    creator_name: 'Lex',
+    creator_email: 'lex@js-adways.com.tw',
     allowance: new CostAllowanceDto(file: ''),
     credit_note: new CostCreditNoteDto(file: ''),
-    debit_note: new CostDebitNoteDto(dollar_type: 1, item_name: '折讓', debit_note_number: 'A784TYG887', memo: ''),
+    debit_note: new CostDebitNoteDto(
+        dollar_type: 1,
+        item_name: '折讓',
+        debit_note_number: 'A784TYG887',
+        date: '20260113',
+        contact_name: '王小明',
+        contact_address: '台北市信義區...',
+        memo: '',
+    ),
     income_receipt: new CostIncomeReceiptDto(receipt_dt: '20260105', item_name: '退佣金', receipt_number: 'AA88765432', file: ''),
 ));
 ```
@@ -309,6 +347,7 @@ src/Dtos/
 │   ├── IncomeDebitNoteDto.php             # Debit note
 │   ├── IncomeCostReceiptDto.php           # 退佣進項發票
 │   ├── IncomeReceiptVoidDto.php
+│   ├── IncomeReceiptVoidUpdateDto.php    # 作廢資料補件（收到客戶回覆）
 │   └── IncomeDiscountVoidDto.php
 └── Cost/
     ├── CostReceiptListDto.php
