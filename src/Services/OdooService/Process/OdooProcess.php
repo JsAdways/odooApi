@@ -15,6 +15,13 @@ class OdooProcess
     protected array $pendingRequests = [];
     protected mixed $result = null;
     protected bool $success = false;
+    protected ?string $token = null;
+
+    public function setToken(string $token): static
+    {
+        $this->token = $token;
+        return $this;
+    }
 
     public function gen_transaction_key(): static
     {
@@ -49,7 +56,7 @@ class OdooProcess
         $data = $cached['data'];
 
         $fullUrl = rtrim(config('odoo_api.odoo_server_host'), '/') . '/' . ltrim($url, '/');
-        $response = Http::$method($fullUrl, $this->_gen_payload($data));
+        $response = Http::withToken($this->token)->$method($fullUrl, $this->_gen_payload($data));
         $this->success = $response->successful();
         $this->result = $response->json();
         return $this;
@@ -103,6 +110,7 @@ class OdooProcess
         $results = [];
         foreach ($this->pendingRequests as $cached) {
             $retryProcess = (new self())
+                ->setToken($this->token)
                 ->from_cache($cached['transaction_key'])
                 ->request();
 

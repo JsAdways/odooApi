@@ -5,11 +5,17 @@ namespace Jsadways\OdooApi\Services\OdooService;
 use Jsadways\OdooApi\Contracts\OdooServiceContract;
 use Jsadways\OdooApi\Dtos\OdooPayloadDto;
 use Jsadways\OdooApi\Enums\OdooEndpoint;
+use Jsadways\OdooApi\Services\OdooService\Process\OdooLogin;
 use Jsadways\OdooApi\Services\OdooService\Process\OdooProcess;
 
 class OdooService implements OdooServiceContract
 {
-    public function __construct(protected OdooProcess $odooProcess) {}
+    public function __construct(
+        protected OdooProcess $odooProcess,
+        protected OdooLogin $odooLogin,
+    ) {
+        $this->odooProcess->setToken($this->odooLogin->login());
+    }
 
     public function create(OdooEndpoint $endpoint, OdooPayloadDto $payload)
     {
@@ -61,6 +67,8 @@ class OdooService implements OdooServiceContract
 
     public function retry(): array
     {
+        $this->odooProcess->setToken($this->odooLogin->login());
+
         $this->odooProcess
             ->get_pending_requests()
             ->retry_all();
