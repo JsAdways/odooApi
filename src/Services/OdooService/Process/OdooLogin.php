@@ -53,7 +53,9 @@ class OdooLogin
             throw new RuntimeException('Odoo login response missing session_token or expires_at');
         }
 
-        $ttl = Carbon::parse($expiresAt)->diffInSeconds(now()) - self::SAFETY_BUFFER_SECONDS;
+//        $ttl = Carbon::parse($expiresAt)->diffInSeconds(now()) - self::SAFETY_BUFFER_SECONDS;
+//        $ttl = now()->diffInSeconds($expiresAt, false) - self::SAFETY_BUFFER_SECONDS;
+        $ttl = Carbon::parse($expiresAt)->timestamp - now()->timestamp - self::SAFETY_BUFFER_SECONDS;
         if ($ttl <= 0) {
             throw new RuntimeException('Odoo login returned already-expired token');
         }
