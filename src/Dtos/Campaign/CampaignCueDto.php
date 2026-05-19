@@ -9,6 +9,7 @@ class CampaignCueDto extends OdooPayloadDto
     public function __construct(
         public readonly int $cue_number,
         public readonly int $product_id,
+        public readonly int $vendor_id,
         public readonly int|float $budget,
         public readonly string $month,
         public readonly int|float $income,

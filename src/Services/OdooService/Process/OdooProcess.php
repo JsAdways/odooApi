@@ -56,7 +56,11 @@ class OdooProcess
         $data = $cached['data'];
 
         $fullUrl = rtrim(config('odoo_api.odoo_server_host'), '/') . '/' . ltrim($url, '/');
-        $response = Http::withToken($this->token)->$method($fullUrl, $this->_gen_payload($data));
+        // 一律以 JSON body 發送（包含 GET）— Odoo API 從 body 讀 filter，
+        // Laravel 預設的 Http::get($url, $payload) 會把 payload 編成 query string，
+        // 對 nested filter array 而言 server 收不到，會被當作沒下 filter。
+        $response = Http::withToken($this->token)
+            ->send(strtoupper($method), $fullUrl, ['json' => $this->_gen_payload($data)]);
         $this->success = $response->successful();
         $this->result = $response->json();
         return $this;
