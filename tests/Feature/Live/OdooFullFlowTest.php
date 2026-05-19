@@ -1190,7 +1190,7 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 filter: [],
                 order_by: 'discount_date', order: 'DESC', page: 1, per_page: 30,
             )
-        );dd($result['data']);
+        );
         $this->assertOdooSuccess($result, 'COST_DISCOUNT_LIST seed');
 
         if (empty($result['data'])) {
