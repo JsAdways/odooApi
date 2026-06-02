@@ -188,7 +188,8 @@ class OdooFullFlowTest extends OdooLiveTestCase
             $cues = [];
             foreach ($cfg['product_idxs'] as $j => $prodIdx) {
                 $cues[] = new CampaignCueDto(
-                    cue_number: 1000 + ($i * 10) + $j + 1,
+                    cue_number: (string) (1000 + ($i * 10) + $j + 1),
+                    type: 1,
                     product_id: self::$ctx['product_ids'][$prodIdx],
                     vendor_id: self::$ctx['vendor_id'],
                     budget: 50000,
@@ -203,6 +204,7 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 new CampaignCreateDto(
                     organization: 1,
                     name: 'Live Test Campaign #'.($i + 1).' '.$stamp,
+                    ae_name: 'Live Test AE',
                     client_id: self::$ctx['partner_ids'][$cfg['partner_idx']],
                     campaign_number: 'LT'.($i + 1).$stamp,
                     start_dt: '2025-10-28',
@@ -246,6 +248,7 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 id: self::$ctx['campaign_id'],
                 organization: 1,
                 name: 'Live Test Campaign (06a new cue)',
+                ae_name: 'Live Test AE',
                 client_id: self::$ctx['partner_id'],
                 campaign_number: 'LT'.date('YmdHis'),
                 start_dt: '2025-10-28',
@@ -257,7 +260,7 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 exchange_rate: 1,
                 cue: [
                     new CampaignCueDto(
-                        cue_number: 1003, product_id: $pid1, vendor_id: self::$ctx['vendor_id'],
+                        cue_number: '1003', type: 1, product_id: $pid1, vendor_id: self::$ctx['vendor_id'],
                         budget: 50000, month: '202512',
                         income: 50000, income_total: 47500, income_discount: 1500, income_rebate: 1000,
                         cost: 30000, cost_total: 29500, cost_discount: 300, cost_rebate: 200,
@@ -294,6 +297,7 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 id: self::$ctx['campaign_id'],
                 organization: 1,
                 name: 'Live Test Campaign (06b update cue)',
+                ae_name: 'Live Test AE',
                 client_id: self::$ctx['partner_id'],
                 campaign_number: 'LT'.date('YmdHis'),
                 start_dt: '2025-10-28',
@@ -306,7 +310,7 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 cue: [
                     new CampaignCueDto(
                         id: $cueIds[0],
-                        cue_number: 1001, product_id: $pid1, vendor_id: self::$ctx['vendor_id'],
+                        cue_number: '1001', type: 1, product_id: $pid1, vendor_id: self::$ctx['vendor_id'],
                         budget: 60000, month: '202510',
                         income: 60000, income_total: 57500, income_discount: 1500, income_rebate: 1000,
                         cost: 30000, cost_total: 29500, cost_discount: 300, cost_rebate: 200,
@@ -314,7 +318,7 @@ class OdooFullFlowTest extends OdooLiveTestCase
                     ),
                     new CampaignCueDto(
                         id: $cueIds[1],
-                        cue_number: 1002, product_id: $pid2, vendor_id: self::$ctx['vendor_id'],
+                        cue_number: '1002', type: 1, product_id: $pid2, vendor_id: self::$ctx['vendor_id'],
                         budget: 40000, month: '202511',
                         income: 40000, income_total: 37500, income_discount: 1500, income_rebate: 1000,
                         cost: 30000, cost_total: 29500, cost_discount: 300, cost_rebate: 200,
@@ -414,7 +418,8 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 ),
                 cost_receipt: new IncomeCostReceiptDto(
                     receipt_dt: '20260105', item_name: '退佣金',
-                    receipt_number: 'CR'.$label, file: '',
+                    receipt_number: 'CR'.$label,
+                    price: 1000, tax: 50, total_price: 1050,
                 ),
             )
         );
@@ -1085,7 +1090,8 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 ),
                 income_receipt: new CostIncomeReceiptDto(
                     receipt_dt: '20260105', item_name: '退佣金',
-                    receipt_number: 'CIR'.$label, file: '',
+                    receipt_number: 'CIR'.$label,
+                    price: 1000, tax: 50, total_price: 1050,
                 ),
             )
         );

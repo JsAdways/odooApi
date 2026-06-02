@@ -13,6 +13,7 @@ class CampaignCreateDto extends OdooPayloadDto
     public function __construct(
         public readonly int $organization,
         public readonly string $name,
+        public readonly string $ae_name,
         public readonly int $client_id,
         public readonly string $campaign_number,
         public readonly string $start_dt,

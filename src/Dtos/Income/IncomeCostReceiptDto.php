@@ -10,6 +10,8 @@ class IncomeCostReceiptDto extends OdooPayloadDto
         public readonly string $receipt_dt,
         public readonly string $item_name,
         public readonly string $receipt_number,
-        public readonly string $file,
+        public readonly int|float $price,
+        public readonly int|float $tax,
+        public readonly int|float $total_price,
     ) {}
 }

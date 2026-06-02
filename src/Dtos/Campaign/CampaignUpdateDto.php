@@ -14,6 +14,7 @@ class CampaignUpdateDto extends OdooPayloadDto
         public readonly int $id,
         public readonly int $organization,
         public readonly string $name,
+        public readonly string $ae_name,
         public readonly int $client_id,
         public readonly string $campaign_number,
         public readonly string $start_dt,

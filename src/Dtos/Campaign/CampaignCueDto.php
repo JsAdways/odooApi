@@ -6,8 +6,12 @@ use Jsadways\OdooApi\Dtos\OdooPayloadDto;
 
 class CampaignCueDto extends OdooPayloadDto
 {
+    /**
+     * @param int $type 1=AP, 2=BR, 3=EC
+     */
     public function __construct(
-        public readonly int $cue_number,
+        public readonly string $cue_number,
+        public readonly int $type,
         public readonly int $product_id,
         public readonly int $vendor_id,
         public readonly int|float $budget,
