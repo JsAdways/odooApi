@@ -346,6 +346,7 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 OdooEndpoint::INCOME_RECEIPT_CREATE,
                 new IncomeReceiptCreateDto(
                     campaign_id: $campaignId,
+                    campaign_url: 'https://example.com/campaign/'.$campaignId,
                     receipt_type: 1,
                     dollar_type: 1,
                     item_name: '廣告服務費 (Campaign #'.($i + 1).')',

@@ -14,6 +14,7 @@ class IncomeReceiptCreateDto extends OdooPayloadDto
      */
     public function __construct(
         public readonly int $campaign_id,
+        public readonly string $campaign_url,
         public readonly int $receipt_type,
         public readonly int $dollar_type,
         public readonly string $item_name,
