@@ -195,7 +195,10 @@ class OdooFullFlowTest extends OdooLiveTestCase
                     budget: 50000,
                     month: '20251'.$j, // 202510, 202511
                     income: 50000, income_total: 47500, income_discount: 1500, income_rebate: 1000,
+                    income_foreign: 50000, income_total_foreign: 47500, income_discount_foreign: 1500, income_rebate_foreign: 1000,
                     cost: 30000, cost_total: 29500, cost_discount: 300, cost_rebate: 200,
+                    cost_foreign: 30000, cost_total_foreign: 29500, cost_discount_foreign: 300, cost_rebate_foreign: 200,
+                    cost_dollar_type: 1,
                     profit_code: '03651', cost_code: '075521',
                 );
             }
@@ -258,12 +261,16 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 total_price: 157500,
                 status: 1,
                 exchange_rate: 1,
+                dollar_type: 1,
                 cue: [
                     new CampaignCueDto(
                         cue_number: '1003', type: 1, product_id: $pid1, vendor_id: self::$ctx['vendor_id'],
                         budget: 50000, month: '202512',
                         income: 50000, income_total: 47500, income_discount: 1500, income_rebate: 1000,
+                        income_foreign: 50000, income_total_foreign: 47500, income_discount_foreign: 1500, income_rebate_foreign: 1000,
                         cost: 30000, cost_total: 29500, cost_discount: 300, cost_rebate: 200,
+                        cost_foreign: 30000, cost_total_foreign: 29500, cost_discount_foreign: 300, cost_rebate_foreign: 200,
+                        cost_dollar_type: 1,
                         profit_code: '03651', cost_code: '075521',
                     ),
                 ],
@@ -307,13 +314,17 @@ class OdooFullFlowTest extends OdooLiveTestCase
                 total_price: 105000,
                 status: 1,
                 exchange_rate: 1,
+                dollar_type: 1,
                 cue: [
                     new CampaignCueDto(
                         id: $cueIds[0],
                         cue_number: '1001', type: 1, product_id: $pid1, vendor_id: self::$ctx['vendor_id'],
                         budget: 60000, month: '202510',
                         income: 60000, income_total: 57500, income_discount: 1500, income_rebate: 1000,
+                        income_foreign: 60000, income_total_foreign: 57500, income_discount_foreign: 1500, income_rebate_foreign: 1000,
                         cost: 30000, cost_total: 29500, cost_discount: 300, cost_rebate: 200,
+                        cost_foreign: 30000, cost_total_foreign: 29500, cost_discount_foreign: 300, cost_rebate_foreign: 200,
+                        cost_dollar_type: 1,
                         profit_code: '03651', cost_code: '075521',
                     ),
                     new CampaignCueDto(
@@ -321,7 +332,10 @@ class OdooFullFlowTest extends OdooLiveTestCase
                         cue_number: '1002', type: 1, product_id: $pid2, vendor_id: self::$ctx['vendor_id'],
                         budget: 40000, month: '202511',
                         income: 40000, income_total: 37500, income_discount: 1500, income_rebate: 1000,
+                        income_foreign: 40000, income_total_foreign: 37500, income_discount_foreign: 1500, income_rebate_foreign: 1000,
                         cost: 30000, cost_total: 29500, cost_discount: 300, cost_rebate: 200,
+                        cost_foreign: 30000, cost_total_foreign: 29500, cost_discount_foreign: 300, cost_rebate_foreign: 200,
+                        cost_dollar_type: 1,
                         profit_code: '03651', cost_code: '075521',
                     ),
                 ],

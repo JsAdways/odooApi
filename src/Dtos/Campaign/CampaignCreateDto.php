@@ -8,6 +8,7 @@ class CampaignCreateDto extends OdooPayloadDto
 {
     /**
      * @param int $organization 1=傑思, 2=豐富, 3=香港
+     * @param int $dollar_type 1=新台幣, 2=美金, 3=日幣
      * @param CampaignCueDto[] $cue 子訂單陣列
      */
     public function __construct(
@@ -23,6 +24,7 @@ class CampaignCreateDto extends OdooPayloadDto
         public readonly int|float $total_price,
         public readonly int $status,
         public readonly int|float $exchange_rate,
+        public readonly int $dollar_type,
         public readonly array $cue,
         public readonly ?string $client_contact_email = null,
         public readonly ?string $message = null,

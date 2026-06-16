@@ -8,6 +8,7 @@ class CampaignUpdateDto extends OdooPayloadDto
 {
     /**
      * @param int $organization 1=傑思, 2=豐富, 3=香港
+     * @param int $dollar_type 1=新台幣, 2=美金, 3=日幣
      * @param CampaignCueDto[] $cue 子訂單陣列（沒帶 id = 新子訂單，有帶 id = 更新既有子訂單）
      */
     public function __construct(
@@ -24,6 +25,7 @@ class CampaignUpdateDto extends OdooPayloadDto
         public readonly int|float $total_price,
         public readonly int $status,
         public readonly int|float $exchange_rate,
+        public readonly int $dollar_type,
         public readonly array $cue,
         public readonly ?string $client_contact_email = null,
         public readonly ?string $message = null,
